@@ -61,7 +61,7 @@ def main(args):
         env = PusherEnv(render_mode=args.render_mode, xml_file=args.assets_path)
 
         # Load the model
-        model = A2C.load(args.model_path, device="cpu")
+        model = SAC.load(args.model_path, device="cpu")
     except FileNotFoundError as e:
         logging.error(f"File not found: {e}")
         exit(1)
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model_path",
         type=str,
-        default=os.path.join(project_root, "data/models/a2c_push_v5.zip"),
+        default=os.path.join(project_root, "data/models/sac_push_v5.zip"),
         help="Path to the trained model.",
     )
     parser.add_argument(

@@ -172,7 +172,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         frame_skip: int = 5,
         default_camera_config: Dict[str, Union[float, int]] = DEFAULT_CAMERA_CONFIG,
         reward_near_weight: float = 0.6,
-        reward_dist_weight: float = 1.0,
+        reward_dist_weight: float = 1.5,
         reward_control_weight: float = 0.1,
         **kwargs,
     ):
@@ -256,24 +256,25 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         self.reward = 0
         qpos = self.init_qpos
 
-        self.goal_pos = np.asarray([0, 0])
-        while True:
-            self.cylinder_pos = np.concatenate(
-                [
-                    self.np_random.uniform(low=-0.3, high=0, size=1),
-                    self.np_random.uniform(low=-0.2, high=0.2, size=1),
-                ]
-            )
-            if np.linalg.norm(self.cylinder_pos - self.goal_pos) > 0.17:
-                break
+        # self.goal_pos = np.asarray([0, 0])
+        # while True:
+        #     self.cylinder_pos = np.concatenate(
+        #         [
+        #             self.np_random.uniform(low=-0.3, high=0, size=1),
+        #             self.np_random.uniform(low=-0.2, high=0.2, size=1),
+        #         ]
+        #     )
+        #     if np.linalg.norm(self.cylinder_pos - self.goal_pos) > 0.17:
+        #         break
 
-        qpos[-4:-2] = self.cylinder_pos
-        qpos[-2:] = self.goal_pos
-        qvel = self.init_qvel + self.np_random.uniform(
-            low=-0.005, high=0.005, size=self.model.nv
-        )
-        qvel[-4:] = 0
-        self.set_state(qpos, qvel)
+        # qpos[-4:-2] = self.cylinder_pos
+        # qpos[-2:] = self.goal_pos
+        # qvel = self.init_qvel + self.np_random.uniform(
+        #     low=-0.005, high=0.005, size=self.model.nv
+        # )
+        # qvel[-4:] = 0
+        # self.set_state(qpos, qvel)
+        self.set_state(self.init_qpos, self.init_qvel)
         return self._get_obs()
 
     def _get_obs(self):
